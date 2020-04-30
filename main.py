@@ -6,6 +6,7 @@ This is the main module of the BitMeter OS desktop client
 
 import time
 import wx
+import wx.adv
 import sys
 import os
 import os.path
@@ -77,9 +78,9 @@ class MyFrame(wx.Frame):
       # Find the file-system location where we are running from
         encoding = sys.getfilesystemencoding()
         if hasattr(sys, "frozen"):
-            self.modulePath = os.path.dirname(unicode(sys.executable, encoding))    
+            self.modulePath = os.path.dirname(sys.executable)    
         else:
-            self.modulePath = os.path.dirname(unicode(__file__, encoding))
+            self.modulePath = os.path.dirname(__file__)
 
         iconPath = os.path.join(self.modulePath, "resources", "bitmeter.ico")
         icon = wx.Icon(iconPath, wx.BITMAP_TYPE_ICO)  
@@ -303,14 +304,14 @@ class MyFrame(wx.Frame):
         self.panel.Refresh()
         self.label.SetLabel(self.FormatAmounts(results[0][0], results[0][1]))
 
-class TrayIcon(wx.TaskBarIcon):  
+class TrayIcon(wx.adv.TaskBarIcon):  
     def __init__(self, parent, menu, icon):  
-        wx.TaskBarIcon.__init__(self)  
+        wx.adv.TaskBarIcon.__init__(self)  
         self.parentApp = parent  
         self.menu = menu
         self.CreateMenu()
         self.SetIcon(icon, "BitMeter OS")  
-        self.Bind(wx.EVT_TASKBAR_LEFT_UP, self.ShowHideGraph)  
+        self.Bind(wx.adv.EVT_TASKBAR_LEFT_UP, self.ShowHideGraph)  
 
     def ShowHideGraph(self, event):
         self.parentApp.Show(True)
@@ -318,7 +319,7 @@ class TrayIcon(wx.TaskBarIcon):
         self.parentApp.showHideMain.SetText(_('Hide Graph'))
         
     def CreateMenu(self):  
-        self.Bind(wx.EVT_TASKBAR_RIGHT_UP, self.ShowMenu)  
+        self.Bind(wx.adv.EVT_TASKBAR_RIGHT_UP, self.ShowMenu)  
 
     def ShowMenu(self,event):  
         self.PopupMenu(self.menu)  
